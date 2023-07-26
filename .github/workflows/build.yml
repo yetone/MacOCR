@@ -21,6 +21,9 @@ jobs:
           swiftc -target x86_64-apple-macos10.15 -o ocr-x86_64 main.swift
           swiftc -target arm64-apple-macos11 -o ocr-arm64 main.swift
 
+      - name: Test
+        run: ./ocr-x86_64 $(pwd)/test.jpg
+
       - name: Upload Binary
         uses: actions/upload-artifact@v3
         with:
