@@ -9,16 +9,9 @@ import Foundation
 import CoreImage
 import Cocoa
 import Vision
-import ScreenCapture
-import ArgumentParserKit
 
 
 var joiner = " "
-var bigSur = false;
-
-if #available(OSX 11, *) {
-    bigSur = true;
-}
 
 func convertCIImageToCGImage(inputImage: CIImage) -> CGImage? {
     let context = CIContext(options: nil)
@@ -57,8 +50,7 @@ func detectText(fileName : URL) -> [CIFeature]? {
         // Create a new request to recognize text.
         let request = VNRecognizeTextRequest(completionHandler: recognizeTextHandler)
         request.recognitionLanguages = recognitionLanguages
-       
-        
+
         do {
             // Perform the text-recognition request.
             try requestHandler.perform([request])
@@ -69,36 +61,16 @@ func detectText(fileName : URL) -> [CIFeature]? {
     return nil
 }
 
-
-
-let inputURL = URL(fileURLWithPath: "/tmp/ocr.png")
-var recognitionLanguages = ["en-US"]
+var recognitionLanguages = ["zh"]
 
 do {
-    
-    
-    let arguments = Array(CommandLine.arguments.dropFirst())
-
-    let parser = ArgumentParser(usage: "<options>", overview: "macOCR is a command line app that enables you to turn any text on your screen into text on your clipboard")
-    
-    if(bigSur){
-        let languageOption = parser.add(option: "--language", shortName: "-l", kind: String.self, usage: "Set Language (Supports Big Sur and Above)")
-        
-        
-        let parsedArguments = try parser.parse(arguments)
-        let language = parsedArguments.get(languageOption)
-        
-        if (language ?? "").isEmpty{
-            
-        }else{
-            recognitionLanguages.insert(language!, at: 0)
-        }
+    if CommandLine.argc < 2 {
+        print("Please provide an image path.")
+    } else {
+        // 获取图片路径
+        let inputURL = URL(fileURLWithPath: CommandLine.arguments[1])
+        if let features = detectText(fileName : inputURL), !features.isEmpty{}
     }
-
-    let _ = ScreenCapture.captureRegion(destination: "/tmp/ocr.png")
-
-    if let features = detectText(fileName : inputURL), !features.isEmpty{}
-
 } catch {
     // handle parsing error
 }

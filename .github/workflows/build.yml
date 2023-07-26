@@ -1,0 +1,34 @@
+name: Build Swift Binary
+
+on: push
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+
+      - name: Install Swift
+        run: |
+          brew install swift
+
+      - name: Build Swift Script
+        run: |
+          swiftc -target x86_64-apple-macos10.10 -o ocr-x86_64 main.swift
+          swiftc -target arm64-apple-macos11 -o ocr-arm64 main.swift
+
+      - name: Upload Binary
+        uses: actions/upload-artifact@v3
+        with:
+          name: ocr-x86_64
+          path: ./ocr-x86_64
+
+      - name: Upload Binary
+        uses: actions/upload-artifact@v3
+        with:
+          name: ocr-arm64
+          path: ./ocr-arm64
