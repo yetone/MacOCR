@@ -49,7 +49,6 @@ func detectText(fileName : URL) -> [CIFeature]? {
 
         // Create a new request to recognize text.
         let request = VNRecognizeTextRequest(completionHandler: recognizeTextHandler)
-        request.recognitionLanguages = recognitionLanguages
 
         do {
             // Perform the text-recognition request.
@@ -60,8 +59,6 @@ func detectText(fileName : URL) -> [CIFeature]? {
 }
     return nil
 }
-
-var recognitionLanguages = ["zh"]
 
 do {
     if CommandLine.argc < 2 {
