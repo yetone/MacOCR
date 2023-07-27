@@ -61,7 +61,19 @@ func detectText(fileName : URL) -> [CIFeature]? {
     return nil
 }
 
+func supportedLanguages() {
+    let request = VNRecognizeTextRequest()
+
+    do {
+        let supportedLanguages = try request.supportedRecognitionLanguages(for: .accurate, revision: VNRecognizeTextRequest.currentRevision)
+        print("Supported languages: \(supportedLanguages)")
+    } catch {
+        print("Error getting supported languages: \(error)")
+    }
+}
+
 do {
+    supportedLanguages()
     if CommandLine.argc < 2 {
         print("Please provide an image path.")
     } else {
