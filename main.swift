@@ -49,7 +49,9 @@ func detectText(fileName : URL) -> [CIFeature]? {
 
         // Create a new request to recognize text.
         let request = VNRecognizeTextRequest(completionHandler: recognizeTextHandler)
-        request.recognitionLanguages = ["chi_sim", "eng"]
+        request.recognitionLevel = .accurate
+        request.recognitionLanguages = ["zh"]
+        request.usesLanguageCorrection = true
 
         do {
             // Perform the text-recognition request.
@@ -65,24 +67,20 @@ func supportedLanguages() {
     let request = VNRecognizeTextRequest()
 
     do {
-        let supportedLanguages = try request.supportedRecognitionLanguages(for: .accurate, revision: VNRecognizeTextRequest.currentRevision)
+        let supportedLanguages = try VNRecognizeTextRequest.supportedRecognitionLanguages(for: .accurate, revision: VNRecognizeTextRequest.currentRevision)
         print("Supported languages: \(supportedLanguages)")
     } catch {
         print("Error getting supported languages: \(error)")
     }
 }
 
-do {
-    supportedLanguages()
-    if CommandLine.argc < 2 {
-        print("Please provide an image path.")
-    } else {
-        // 获取图片路径
-        let inputURL = URL(fileURLWithPath: CommandLine.arguments[1])
-        if let features = detectText(fileName : inputURL), !features.isEmpty{}
-    }
-} catch {
-    // handle parsing error
+supportedLanguages()
+if CommandLine.argc < 2 {
+    print("Please provide an image path.")
+} else {
+    // 获取图片路径
+    let inputURL = URL(fileURLWithPath: CommandLine.arguments[1])
+    if let features = detectText(fileName : inputURL), !features.isEmpty{}
 }
 
 exit(EXIT_SUCCESS)
