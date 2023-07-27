@@ -41,20 +41,22 @@ func recognizeTextHandler(request: VNRequest, error: Error?) {
     
 }
 
-func detectText(fileName : URL) -> [CIFeature]? {
+func detectText(fileName : URL, lang : string) -> [CIFeature]? {
     if let ciImage = CIImage(contentsOf: fileName){
         guard let img = convertCIImageToCGImage(inputImage: ciImage) else { return nil}
       
         let requestHandler = VNImageRequestHandler(cgImage: img)
 
-        // Create a new request to recognize text.
         let request = VNRecognizeTextRequest(completionHandler: recognizeTextHandler)
         request.recognitionLevel = .accurate
-        request.recognitionLanguages = ["zh"]
+        if (lang == "auto"){
+            request.recognitionLanguages = ["zh-Hans", "zh-Hant", "en-US", "ja-JP", "ko-KR", "fr-FR", "es-ES", "ru-RU", "de-DE", "it-IT", "tr-TR", "pt-PT", "vi-VN", "id-ID", "th-TH", "ms-MY", "ar-SA", "hi-IN" ]
+        }else{
+            request.recognitionLanguages = [lang]
+        }
         request.usesLanguageCorrection = true
 
         do {
-            // Perform the text-recognition request.
             try requestHandler.perform([request])
         } catch {
             print("Unable to perform the requests: \(error).")
@@ -63,24 +65,13 @@ func detectText(fileName : URL) -> [CIFeature]? {
     return nil
 }
 
-func supportedLanguages() {
-    let request = VNRecognizeTextRequest()
-
-    do {
-        let supportedLanguages = try VNRecognizeTextRequest.supportedRecognitionLanguages(for: .accurate, revision: VNRecognizeTextRequest.currentRevision)
-        print("Supported languages: \(supportedLanguages)")
-    } catch {
-        print("Error getting supported languages: \(error)")
-    }
-}
-
 supportedLanguages()
 if CommandLine.argc < 2 {
     print("Please provide an image path.")
 } else {
-    // 获取图片路径
     let inputURL = URL(fileURLWithPath: CommandLine.arguments[1])
-    if let features = detectText(fileName : inputURL), !features.isEmpty{}
+    let language = CommandLine.arguments[2]
+    if let features = detectText(fileName : inputURL, lang : string), !features.isEmpty{}
 }
 
 exit(EXIT_SUCCESS)

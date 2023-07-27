@@ -22,7 +22,7 @@ jobs:
           swiftc -target arm64-apple-macos11 -o ocr-arm64 main.swift
 
       - name: Test
-        run: ./ocr-x86_64 $(pwd)/test.jpg
+        run: ./ocr-x86_64 $(pwd)/test.jpg auto
 
       - name: Upload Binary
         uses: actions/upload-artifact@v3
