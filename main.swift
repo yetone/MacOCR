@@ -49,7 +49,7 @@ func detectText(fileName : URL) -> [CIFeature]? {
 
         // Create a new request to recognize text.
         let request = VNRecognizeTextRequest(completionHandler: recognizeTextHandler)
-        request.recognitionLanguages = ["zh", "en-US"]
+        request.recognitionLanguages = ["chi_sim", "eng"]
 
         do {
             // Perform the text-recognition request.
