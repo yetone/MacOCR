@@ -41,7 +41,7 @@ func recognizeTextHandler(request: VNRequest, error: Error?) {
     
 }
 
-func detectText(fileName : URL, lang : string) -> [CIFeature]? {
+func detectText(fileName : URL, lang : String) -> [CIFeature]? {
     if let ciImage = CIImage(contentsOf: fileName){
         guard let img = convertCIImageToCGImage(inputImage: ciImage) else { return nil}
       
@@ -65,13 +65,12 @@ func detectText(fileName : URL, lang : string) -> [CIFeature]? {
     return nil
 }
 
-supportedLanguages()
 if CommandLine.argc < 2 {
     print("Please provide an image path.")
 } else {
     let inputURL = URL(fileURLWithPath: CommandLine.arguments[1])
     let language = CommandLine.arguments[2]
-    if let features = detectText(fileName : inputURL, lang : string), !features.isEmpty{}
+    if let features = detectText(fileName : inputURL, lang : String), !features.isEmpty{}
 }
 
 exit(EXIT_SUCCESS)
