@@ -70,7 +70,7 @@ if CommandLine.argc < 2 {
 } else {
     let inputURL = URL(fileURLWithPath: CommandLine.arguments[1])
     let language = CommandLine.arguments[2]
-    if let features = detectText(fileName : inputURL, lang : String), !features.isEmpty{}
+    if let features = detectText(fileName : inputURL, lang : language), !features.isEmpty{}
 }
 
 exit(EXIT_SUCCESS)

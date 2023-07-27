@@ -18,20 +18,20 @@ jobs:
 
       - name: Build Swift Script
         run: |
-          swiftc -target x86_64-apple-macos10.15 -o ocr-x86_64 main.swift
-          swiftc -target arm64-apple-macos11 -o ocr-arm64 main.swift
+          swiftc -target x86_64-apple-macos10.15 -o ocr-x86_64-apple-darwin main.swift
+          swiftc -target arm64-apple-macos11 -o ocr-aarch64-apple-darwin main.swift
 
       - name: Test
-        run: ./ocr-x86_64 $(pwd)/test.jpg auto
+        run: ./ocr-x86_64-apple-darwin $(pwd)/test.jpg auto
 
       - name: Upload Binary
         uses: actions/upload-artifact@v3
         with:
-          name: ocr-x86_64
-          path: ./ocr-x86_64
+          name: ocr-x86_64-apple-darwin
+          path: ./ocr-x86_64-apple-darwin
 
       - name: Upload Binary
         uses: actions/upload-artifact@v3
         with:
-          name: ocr-arm64
-          path: ./ocr-arm64
+          name: ocr-aarch64-apple-darwin
+          path: ./ocr-aarch64-apple-darwin
